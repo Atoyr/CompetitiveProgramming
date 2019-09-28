@@ -10,11 +10,67 @@ import (
 func main() {
 	nextReader = newScanner()
 
-	a := nextInt()
-	b := nextInt()
-	c := nextInt()
+	N := nextInt()
 	s := nextString()
-	fmt.Printf("%d %s\n", a+b+c, s)
+	sheet := make([]int, N)
+	N = N - 1
+	for i := range s {
+		no := i + 1
+		if s[i] == 'L' {
+			if sheet[0] == 0 {
+				sheet[0] = no
+			} else {
+				first := -1
+				before := -1
+				ok := false
+				for j := 0; j < len(sheet); j++ {
+					if sheet[j] == 0 {
+						if first < 0 {
+							first = j
+						}
+						if before == 0 {
+							sheet[j] = no
+							ok = true
+							break
+						}
+
+					}
+					before = sheet[j]
+				}
+				if ok == false {
+					sheet[first] = no
+				}
+			}
+
+		} else {
+			if sheet[N] == 0 {
+				sheet[N] = no
+			} else {
+				first := -1
+				before := -1
+				ok := false
+				for j := 0; j < len(sheet); j++ {
+					if sheet[N-j] == 0 {
+						if first < 0 {
+							first = N - j
+						}
+						if before == 0 {
+							sheet[N-j] = no
+							ok = true
+							break
+						}
+					}
+					before = sheet[N-j]
+				}
+				if ok == false {
+					sheet[first] = no
+				}
+			}
+		}
+	}
+	for i := range sheet {
+		fmt.Printf("%d\n", sheet[i])
+	}
 }
 
 var nextReader func() string
